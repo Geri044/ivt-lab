@@ -20,27 +20,11 @@ public class GT4500 implements SpaceShip {
     return false;
   }
 
-  /**
-  * Tries to fire the torpedo stores of the ship.
-  *
-  * @param firingMode how many torpedo bays to fire
-  * 	SINGLE: fires only one of the bays.
-  * 			- For the first time the primary store is fired.
-  * 			- To give some cooling time to the torpedo stores, torpedo stores are fired alternating.
-  * 			- But if the store next in line is empty the ship tries to fire the other store.
-  * 			- If the fired store reports a failure, the ship does not try to fire the other one.
-  * 	ALL:	tries to fire both of the torpedo stores.
-  *
-  * @return whether at least one torpedo was fired successfully
-  */
-  @Override
-  public boolean fireTorpedos(FiringMode firingMode) {
+  public bool singleFire()
+{
+boolean firingSuccess;
 
-    boolean firingSuccess = false;
-
-    switch (firingMode) {
-      case SINGLE:
-        if (wasPrimaryFiredLast) {
+ if (wasPrimaryFiredLast) {
           // try to fire the secondary first
           if (! secondaryTorpedoStore.isEmpty()) {
             firingSuccess = secondaryTorpedoStore.fire(1);
@@ -74,12 +58,13 @@ public class GT4500 implements SpaceShip {
             // if both of the stores are empty, nothing can be done, return failure
           }
         }
-        break;
 
-      case ALL:
-        // try to fire both of the torpedos
-        //TODO implement feature
-    	  boolean success1 = true, success2 = true;
+return firingSuccess;
+}
+
+public boolean fireAll()
+{
+boolean success1 = true, success2 = true;
     	  if (! secondaryTorpedoStore.isEmpty()) 
     	  {
     		  
@@ -96,11 +81,38 @@ public class GT4500 implements SpaceShip {
 
               // if both of the stores are empty, nothing can be done, return failure
           }
-    	  firingSuccess = success1 && success2;
+    	  return success1 && success2;
+}
+
+  /**
+  * Tries to fire the torpedo stores of the ship.
+  *
+  * @param firingMode how many torpedo bays to fire
+  * 	SINGLE: fires only one of the bays.
+  * 			- For the first time the primary store is fired.
+  * 			- To give some cooling time to the torpedo stores, torpedo stores are fired alternating.
+  * 			- But if the store next in line is empty the ship tries to fire the other store.
+  * 			- If the fired store reports a failure, the ship does not try to fire the other one.
+  * 	ALL:	tries to fire both of the torpedo stores.
+  *
+  * @return whether at least one torpedo was fired successfully
+  */
+  @Override
+  public boolean fireTorpedos(FiringMode firingMode) {
+
+    
+
+    switch (firingMode) {
+      case SINGLE:
+        return singleFire();
+        break;
+
+      case ALL:
+        // try to fire both of the torpedos
+        //TODO implement feature
+    	  
         break;
     }
-
-    return firingSuccess;
   }
 
 }
